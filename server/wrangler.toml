@@ -1,0 +1,12 @@
+name = "vscode-bridge"
+main = "src/index.js"
+compatibility_date = "2025-09-01"
+workers_dev = true
+
+[[durable_objects.bindings]]
+name = "BRIDGE"
+class_name = "Bridge"
+
+[[migrations]]
+tag = "v1"
+new_sqlite_classes = ["Bridge"]

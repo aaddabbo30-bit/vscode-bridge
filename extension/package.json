@@ -1,0 +1,59 @@
+{
+  "name": "claude-bridge",
+  "displayName": "Claude Bridge",
+  "description": "Usa Claude (claude.ai) dentro VS Code tramite il tuo server VS Code Bridge, senza API.",
+  "version": "0.1.0",
+  "publisher": "ale-local",
+  "license": "MIT",
+  "engines": { "vscode": "^1.80.0" },
+  "categories": ["Other"],
+  "main": "./extension.js",
+  "activationEvents": ["onStartupFinished"],
+  "contributes": {
+    "viewsContainers": {
+      "activitybar": [{ "id": "claudeBridge", "title": "Claude", "icon": "media/icon.svg" }]
+    },
+    "views": {
+      "claudeBridge": [{ "type": "webview", "id": "claudeBridge.chat", "name": "Chat" }]
+    },
+    "commands": [
+      { "command": "claudeBridge.configure", "title": "Configura (URL e token)", "category": "Claude Bridge" },
+      { "command": "claudeBridge.ask", "title": "Chiedi a Claude", "category": "Claude Bridge" },
+      { "command": "claudeBridge.editSelection", "title": "Modifica selezione con Claude", "category": "Claude Bridge" },
+      { "command": "claudeBridge.stop", "title": "Ferma l'ascolto di Claude", "category": "Claude Bridge" },
+      { "command": "claudeBridge.clear", "title": "Pulisci la chat", "category": "Claude Bridge" },
+      { "command": "claudeBridge.copyPrompt", "title": "Copia il prompt per claude.ai", "category": "Claude Bridge" }
+    ],
+    "keybindings": [
+      { "command": "claudeBridge.ask", "key": "ctrl+alt+c", "mac": "cmd+alt+c" },
+      { "command": "claudeBridge.editSelection", "key": "ctrl+alt+e", "mac": "cmd+alt+e", "when": "editorTextFocus" }
+    ],
+    "menus": {
+      "editor/context": [
+        { "command": "claudeBridge.ask", "group": "claude@1" },
+        { "command": "claudeBridge.editSelection", "group": "claude@2", "when": "editorHasSelection" }
+      ]
+    },
+    "configuration": {
+      "title": "Claude Bridge",
+      "properties": {
+        "claudeBridge.serverUrl": {
+          "type": "string",
+          "default": "https://vscode-bridge.a-addabbo30.workers.dev",
+          "description": "Indirizzo del tuo server VS Code Bridge (Cloudflare Worker)."
+        },
+        "claudeBridge.autoApproveCommands": {
+          "type": "array",
+          "items": { "type": "string" },
+          "default": ["git status", "git diff", "git log", "git branch", "git show"],
+          "description": "Comandi che Claude può eseguire senza chiedere (prefissi esatti, senza &&, |, ; ecc.). Tutti gli altri chiedono conferma."
+        },
+        "claudeBridge.idleMinutes": {
+          "type": "number",
+          "default": 20,
+          "description": "Dopo questi minuti senza attività e senza Claude in ascolto, l'estensione controlla il server ogni 15 s invece di restare collegata."
+        }
+      }
+    }
+  }
+}
